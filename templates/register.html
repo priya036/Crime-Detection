@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Criminal Detection</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .button {
+            position: relative;
+            width: 10rem;
+            height: 3rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+            align-items: center;
+            margin-left: 100px;
+            margin-bottom: -50px;
+        }
+
+        .button svg {
+            width: 100%;
+            height: 30px;
+            overflow: visible;
+        }
+
+        .border {
+            width: 100%;
+            height: 100%;
+            stroke: black;
+            stroke-width: 2px;
+            fill: #0000;
+            rx: 1em;
+            ry: 1em;
+            stroke-dasharray: 25;
+            transition: fill 0.25s;
+            animation: 4s linear infinite stroke-animation;
+        }
+
+        .button:hover .border {
+            fill: #0001;
+        }
+
+        .button:focus .border {
+            transition: fill 0.25s 7.75s;
+            fill: #ffffff00;
+        }
+
+        @keyframes stroke-animation {
+            0% {
+                stroke-dashoffset: 100;
+            }
+
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .txt-upload {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .txt-upload::after {
+            content: "";
+        }
+
+        .button:focus .rect {
+            stroke-dasharray: 50;
+        }
+
+        .button:focus .border {
+            stroke: #0000;
+        }
+
+        .button:focus .txt-upload {
+            opacity: 0;
+            transition: opacity 0.25s 8s;
+        }
+
+        .button:focus .txt-upload::after {
+            animation: 0.66666s anim step-end forwards,
+                1.33333s 0.6666s anim2 linear infinite alternate;
+        }
+
+        @keyframes anim {
+            0% {
+                content: "i";
+            }
+
+            50% {
+                content: "in";
+            }
+
+            to {
+                content: "ing";
+            }
+        }
+
+        @keyframes anim2 {
+            0% {
+                content: "ing";
+            }
+
+            33% {
+                content: "ing.";
+            }
+
+            66% {
+                content: "ing..";
+            }
+
+            to {
+                content: "ing...";
+            }
+        }
+
+        .loading {
+            width: 100%;
+            height: 100%;
+            stroke: #0055d4;
+            stroke-width: 2px;
+            fill: none;
+            rx: 1em;
+            ry: 1em;
+            stroke-dasharray: 0 100;
+        }
+
+        .button:focus .loading {
+            transition: stroke 0.5s 7.5s, stroke-dasharray 8s 0.5s ease-out;
+            stroke: #08ca08;
+            stroke-dasharray: 100 0;
+        }
+
+        .done {
+            fill: none;
+            stroke: #000;
+            stroke-dasharray: 0 100;
+        }
+
+        .button:focus .done-cloud {
+            transition: stroke-dasharray 0.75s 8.5s ease-out;
+            stroke-dasharray: 100 0;
+        }
+
+        .button:focus .done-check {
+            transition: stroke-dasharray 0.5s 9.2s ease-out;
+            stroke: #08ca08;
+            stroke-dasharray: 100 0;
+        }
+
+        .container {
+            display: flex;
+            gap: 50px;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .title {
+            font-size: 28px;
+            color: royalblue;
+            font-weight: 600;
+            letter-spacing: -1px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-top: -30px;
+            padding-left: 30px;
+            margin-bottom: 5px;
+            /* Reduced the margin to lessen the space */
+        }
+
+        .title::before,
+        .title::after {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            left: 0px;
+            background-color: royalblue;
+        }
+
+        .title::before {
+            width: 18px;
+            height: 18px;
+            background-color: royalblue;
+        }
+
+        .title::after {
+            width: 18px;
+            height: 18px;
+            animation: pulse 1s linear infinite;
+        }
+
+        .message,
+        .signin {
+            color: rgba(88, 87, 87, 0.822);
+            font-size: 14px;
+            margin-bottom: 20px;
+            /* Added margin-bottom for spacing */
+        }
+
+        .signin {
+            text-align: center;
+        }
+
+        .signin a {
+            color: royalblue;
+        }
+
+        .signin a:hover {
+            text-decoration: underline royalblue;
+        }
+
+        .flex {
+            display: flex;
+            margin-top: -15px;
+            width: 100%;
+            gap: 6px;
+        }
+
+        .form label {
+            position: relative;
+        }
+
+        .form label .input {
+            width: 100%;
+            padding: 10px 10px 20px 10px;
+            outline: 0;
+            border: 1px solid rgba(105, 105, 105, 0.397);
+            border-radius: 10px;
+        }
+
+        .form label .input+span {
+            position: absolute;
+            left: 10px;
+            top: 11px;
+            /* Adjusted top position */
+            color: grey;
+            font-size: 0.9em;
+            cursor: text;
+            transition: 0.3s ease;
+        }
+
+        .form label .input:placeholder-shown+span {
+            top: 11px;
+            font-size: 0.9em;
+        }
+
+        .form label .input:focus+span,
+        .form label .input:valid+span {
+            top: 30px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        .form label .input:valid+span {
+            color: green;
+        }
+
+        .submit {
+            border: none;
+            outline: none;
+            background-color: royalblue;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.3s ease;
+        }
+
+        .submit:hover {
+            background-color: rgb(56, 90, 194);
+        }
+
+        @keyframes pulse {
+            from {
+                transform: scale(0.9);
+                opacity: 1;
+            }
+
+            to {
+                transform: scale(1.8);
+                opacity: 0;
+            }
+        }
+
+        .file-upload-form {
+            width: fit-content;
+            height: fit-content;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 200px;
+            /* Pushes the upload section down */
+        }
+
+        .file-upload-label input {
+            display: none;
+        }
+
+        .file-upload-label svg {
+            height: 40px;
+            margin-bottom: 2px;
+        }
+
+        .file-upload-label {
+            cursor: pointer;
+            background-color: #f1f1f1;
+            padding: 20px 70px;
+            border-radius: 20px;
+            border: 1px dashed rgb(82, 82, 82);
+        }
+
+        .file-upload-design {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: -20px;
+        }
+
+        .browse-button {
+            background-color: rgb(82, 82, 82);
+            padding: 5px 15px;
+            border-radius: 10px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .browse-button:hover {
+            background-color: rgb(14, 14, 14);
+        }
+
+        .drop-container {
+            background-color: #fff;
+            position: relative;
+            display: flex;
+            gap: 5px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            margin-top: 2.1875rem;
+            border-radius: 10px;
+            border: 1px dashed grey;
+            color: grey;
+            cursor: pointer;
+            transition: background .2s ease-in-out, border .2s ease-in-out;
+            margin-top: 13px;
+            margin-left: 20px;
+        }
+
+        .drop-container:hover {
+            background: rgba(0, 140, 255, 0.164);
+            border-color: rgba(17, 17, 17, 0.616);
+        }
+
+        .drop-container:hover .drop-title {
+            color: #222;
+        }
+
+        .drop-title {
+            color: #444;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            transition: color .2s ease-in-out;
+        }
+
+        #registerImage {
+            width: 350px;
+            max-width: 100%;
+            color: #444;
+            padding: 2px;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid rgba(8, 8, 8, 0.288);
+        }
+
+        #registerImage:file-selector-button {
+            margin-right: 20px;
+            border: none;
+            background: #88acfc;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: #fff;
+            cursor: pointer;
+            transition: background .2s ease-in-out;
+        }
+
+        #registerImage::file-selector-button:hover {
+            background: #8cafec;
+            border-radius: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            background-color: black;
+            width: 300px;
+            height: 50px;
+            align-items: center;
+            justify-content: space-around;
+            border-radius: 10px;
+        }
+
+        .buttondown {
+            outline: 0 !important;
+            border: 0 !important;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all ease-in-out 0.3s;
+            cursor: pointer;
+        }
+
+        .buttondown:hover {
+            transform: translateY(-3px);
+        }
+
+        .icon {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="form" id="registerForm" action="{{ url_for('register') }}" method="post" enctype="multipart/form-data">
+            <p class="title">Register</p>
+            <p class="message">Register the criminal details below.</p>
+            <div class="flex">
+                <label>
+                    <input required="" type="text" class="input" id="criminal_id" name="criminal_id" placeholder=" ">
+                    <span>Criminal ID</span>
+                </label>
+    
+                <label>
+                    <input required="" type="text" class="input" id="name" name="name" placeholder=" ">
+                    <span>Name</span>
+                </label>
+    
+                <label>
+                    <input required="" type="text" class="input" id="father_name" name="father_name" placeholder=" ">
+                    <span>Father's Name</span>
+                </label>
+            </div>
+    
+            <label>
+                <input required="" type="text" class="input" id="gender" name="gender" placeholder=" ">
+                <span>Gender</span>
+            </label>
+    
+            <label>
+                <input required="" type="text" class="input" id="religion" name="religion" placeholder=" ">
+                <span>Religion</span>
+            </label>
+    
+            <label>
+                <input required="" type="text" class="input" id="blood_group" name="blood_group" placeholder=" ">
+                <span>Blood Group</span>
+            </label>
+    
+            <label>
+                <input required="" type="text" class="input" id="body_mark" name="body_mark" placeholder=" ">
+                <span>Body Mark</span>
+            </label>
+    
+            <label>
+                <input required="" type="text" class="input" id="nationality" name="nationality" placeholder=" ">
+                <span>Nationality</span>
+            </label>
+    
+            <label>
+                <input required="" type="text" class="input" id="crime_done" name="crime_done" placeholder=" ">
+                <span>Crime Done</span>
+            </label>
+    
+            <label for="image" class="drop-container">
+                <span class="drop-title">Drop files here</span>
+                or
+                <input type="file" accept="image/*" required="" id="image" name="image">
+            </label>
+    
+            <button class="button" type="button" id="submitButton">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <rect class="border" pathLength="100"></rect>
+                    <rect class="loading" pathLength="100"></rect>
+    
+                    <svg class="done-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path class="done done-cloud" pathLength="100"
+                            d="M 6.5,20 Q 4.22,20 2.61,18.43 1,16.85 1,14.58 1,12.63 2.17,11.1 3.35,9.57 5.25,9.15 5.88,6.85 7.75,5.43 9.63,4 12,4 14.93,4 16.96,6.04 19,8.07 19,11 q 1.73,0.2 2.86,1.5 1.14,1.28 1.14,3 0,1.88 -1.31,3.19 Q 20.38,20 18.5,20 Z">
+                        </path>
+                        <path class="done done-check" pathLength="100"
+                            d="M 7.515,12.74 10.34143,15.563569 15.275,10.625"></path>
+                    </svg>
+                </svg>
+                <div class="txt-upload">Register</div>
+            </button>
+    
+        </form>
+    </div>
+    <br>
+    <div class="button-container">
+        <a href="{{ url_for('home') }}">
+            <button class="buttondown">
+                <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024"
+                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M946.5 505L560.1 118.8l-25.9-25.9a31.5 31.5 0 0 0-44.4 0L77.5 505a63.9 63.9 0 0 0-18.8 46c.4 35.2 29.7 63.3 64.9 63.3h42.5V940h691.8V614.3h43.4c17.1 0 33.2-6.7 45.3-18.8a63.6 63.6 0 0 0 18.7-45.3c0-17-6.7-33.1-18.8-45.2zM568 868H456V664h112v204zm217.9-325.7V868H632V640c0-22.1-17.9-40-40-40H432c-22.1 0-40 17.9-40 40v228H238.1V542.3h-96l370-369.7 23.1 23.1L882 542.3h-96.1z">
+                    </path>
+                </svg>
+            </button>
+        </a>
+        <a href="{{ url_for('register') }}">
+            <button class="buttondown">
+                <svg class="icon" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24"
+                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M12 2.5a5.5 5.5 0 0 1 3.096 10.047 9.005 9.005 0 0 1 5.9 8.181.75.75 0 1 1-1.499.044 7.5 7.5 0 0 0-14.993 0 .75.75 0 0 1-1.5-.045 9.005 9.005 0 0 1 5.9-8.18A5.5 5.5 0 0 1 12 2.5ZM8 8a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z">
+                    </path>
+                </svg>
+            </button>
+        </a>
+        <a href="{{ url_for('search') }}">
+            <button class="buttondown">
+                <svg class="icon" stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"
+                    height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </button>
+        </a>
+    </div>
+    <script>
+    
+        const toBase64 = (file) => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = (error) => reject(error);
+        });
+    
+        document.getElementById('submitButton').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const form = document.getElementById('registerForm');
+        const inputs = form.querySelectorAll('input[required]');
+        let allFilled = true;
+
+        inputs.forEach(input => {
+            if (!input.value) {
+                allFilled = false;
+            }
+        });
+
+        if (!allFilled) {
+            alert('Please fill out all required fields.');
+        } else {
+            setTimeout(() => {
+                form.submit(); // Submit the form after 10 seconds
+            }, 10000); // 10 seconds delay
+        }
+    });
+    </script>
+    
+</body>
+
+</html>

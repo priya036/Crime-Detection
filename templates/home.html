@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Image with Buttons</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+            font-family: Arial, sans-serif;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50%; /* Adjust the size as needed */
+            height: auto;
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: 140px;
+            display: flex;
+            gap: 300px;
+        }
+
+        .styled-button {
+            position: relative;
+            padding: 0.4rem 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #000000;
+            background: #ededed;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none; /* Remove underline from links */
+        }
+
+        .styled-button::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            right: -1px;
+            bottom: -1px;
+            left: -1px;
+            background: linear-gradient(to bottom, #292929, #000000);
+            z-index: -1;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+            opacity: 1;
+        }
+
+        .styled-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 1), 0 5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .styled-button .inner-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            border-radius: 50%;
+            box-shadow: 0 0 1px rgba(0, 0, 0, 1);
+            border: 1px solid #252525;
+            transition: all 0.2s ease;
+        }
+
+        .styled-button .inner-button::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            right: -1px;
+            bottom: -1px;
+            left: -1px;
+            background: linear-gradient(to bottom, #292929, #000000);
+            z-index: -1;
+            border-radius: 9999px;
+            transition: all 0.2s ease;
+            opacity: 1;
+        }
+
+        .styled-button .inner-button .icon {
+            transition: all 0.4s ease-in-out;
+        }
+
+        .styled-button .inner-button .icon:hover {
+            transform: rotate(-35deg);
+        }
+    </style>
+</head>
+<body>
+    <img src="../static/images/wall pro.jpg" alt="Background Image" class="background-image">
+    <div class="button-container">
+        <a href="{{ url_for('register') }}" class="styled-button">
+            Register
+            <div class="inner-button">
+                <svg id="Arrow" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" class="icon">
+                    <defs>
+                        <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">
+                            <stop style="stop-color:#000000;stop-opacity:1" offset="0%"></stop>
+                            <stop style="stop-color:#000000;stop-opacity:1" offset="100%"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#iconGradient)" d="M4 15a1 1 0 0 0 1 1h19.586l-4.292 4.292a1 1 0 0 0 1.414 1.414l6-6a.99.99 0 0 0 .292-.702V15c0-.13-.026-.26-.078-.382a.99.99 0 0 0-.216-.324l-6-6a1 1 0 0 0-1.414 1.414L24.586 14H5a1 1 0 0 0-1 1z"></path>
+                </svg>
+            </div>
+        </a>
+        <a href="{{ url_for('search') }}" class="styled-button">
+            Search
+            <div class="inner-button">
+                <svg id="Arrow" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" height="30px" width="30px" class="icon">
+                    <defs>
+                        <linearGradient y2="100%" x2="100%" y1="0%" x1="0%" id="iconGradient">
+                            <stop style="stop-color:#000000;stop-opacity:1" offset="0%"></stop>
+                            <stop style="stop-color:#000000;stop-opacity:1" offset="100%"></stop>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#iconGradient)" d="M4 15a1 1 0 0 0 1 1h19.586l-4.292 4.292a1 1 0 0 0 1.414 1.414l6-6a.99.99 0 0 0 .292-.702V15c0-.13-.026-.26-.078-.382a.99.99 0 0 0-.216-.324l-6-6a1 1 0 0 0-1.414 1.414L24.586 14H5a1 1 0 0 0-1 1z"></path>
+                </svg>
+            </div>
+        </a>
+    </div>
+</body>
+</html>

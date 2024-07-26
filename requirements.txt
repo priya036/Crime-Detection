@@ -1,0 +1,7 @@
+Flask
+pymongo
+werkzeug
+opencv-python
+deepface
+matplotlib
+tf-keras

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Present</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        window.onload = function() {
+            alert("The data with the Same criminal ID is already present!");
+            window.location.href = "{{ url_for('home') }}";
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>
