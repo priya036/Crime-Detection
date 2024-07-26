@@ -8,7 +8,7 @@ import config
 app = Flask(__name__)
 app.config.from_object(config)
 
-client = MongoClient(config.MONGO_URI,ssl=True, ssl_cert_reqs=ssl.CERT_NONE)
+client = MongoClient(config.MONGO_URI)
 db = client[config.DB_NAME]
 criminals = db.criminals
 
