@@ -4,11 +4,22 @@ import os
 from werkzeug.utils import secure_filename
 from utils.face_recognition import verify_faces
 import config
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 app = Flask(__name__)
 app.config.from_object(config)
 
-client = MongoClient(config.MONGO_URI)
+
+uri = "mongodb+srv://priya:5799@criminaldata.jhclr9m.mongodb.net/?retryWrites=true&w=majority&appName=CriminalData"
+
+client = MongoClient(uri, server_api=ServerApi('1'))
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+    
 db = client[config.DB_NAME]
 criminals = db.criminals
 
